@@ -1,0 +1,5 @@
+profile: service
+defaultPackage: geecon.lambda.function
+---
+testFramework: junit
+sourceLanguage: java
