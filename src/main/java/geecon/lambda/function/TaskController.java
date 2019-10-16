@@ -2,13 +2,11 @@ package geecon.lambda.function;
 
 import io.micronaut.http.HttpStatus;
 import io.micronaut.http.annotation.*;
-import io.micronaut.http.annotation.Error;
-import io.micronaut.http.hateoas.JsonError;
 
 import javax.annotation.Nullable;
 import javax.validation.constraints.NotEmpty;
 import javax.validation.constraints.NotNull;
-import java.util.NoSuchElementException;
+import java.util.Optional;
 
 @Controller("/api/tasks")
 public class TaskController {
@@ -25,8 +23,8 @@ public class TaskController {
     }
 
     @Get("/{id}")
-    public Task show(@NotNull Long id) {
-        return repository.findById(id).orElse(null); // orElseThrow(() -> new NoSuchElementException("No such task for ID " + id));
+    public Optional<Task> show(@NotNull Long id) {
+        return repository.findById(id);
     }
 
     @Post("/")
@@ -40,26 +38,19 @@ public class TaskController {
 
     @Status(HttpStatus.ACCEPTED)
     @Put("/{id}")
-    public void update(@NotNull Long id, @NotEmpty String summary, @Nullable String description) {
+    public Optional<Task> update(@NotNull Long id, @NotEmpty String summary, @Nullable String description) {
         if (!repository.existsById(id)) {
-            throw new NoSuchElementException("No such task for ID " + id);
+            return Optional.empty();
         }
         repository.update(id, summary, description);
+        return repository.findById(id);
     }
 
     @Status(HttpStatus.NO_CONTENT)
     @Delete("/{id}")
-    public void delete(@NotNull Long id) {
-        if (!repository.existsById(id)) {
-            throw new NoSuchElementException("No such task for ID " + id);
-        }
-        repository.findById(id).ifPresent(repository::delete);
+    public Optional<Task> delete(@NotNull Long id) {
+        Optional<Task> task = repository.findById(id);
+        task.ifPresent(repository::delete);
+        return task;
     }
-
-    @Error(exception = NoSuchElementException.class)
-    @Status(HttpStatus.NOT_FOUND)
-    public JsonError noSuchElement(NoSuchElementException e){
-        return new JsonError(e.getMessage());
-    }
-
 }
