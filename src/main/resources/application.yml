@@ -1,3 +1,15 @@
 micronaut:
   application:
     name: geecon-lambda-function
+
+jackson:
+  bean-introspection-module: true
+
+datasources:
+  default:
+    url: jdbc:postgresql://geecon-lambda-function.c49lik5nusqk.eu-central-1.rds.amazonaws.com:5432/tasks
+    driverClassName: org.postgresql.Driver
+    username: postgres
+    password: XqNNRIjX1jKtF84V4JCf
+    schema-generate: CREATE
+    dialect: POSTGRES
