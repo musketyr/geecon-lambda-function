@@ -2,11 +2,13 @@ package geecon.lambda.function;
 
 import io.micronaut.http.HttpStatus;
 import io.micronaut.http.annotation.*;
+import io.reactivex.Flowable;
+import io.reactivex.Maybe;
+import io.reactivex.Single;
 
 import javax.annotation.Nullable;
 import javax.validation.constraints.NotEmpty;
 import javax.validation.constraints.NotNull;
-import java.util.Optional;
 
 @Controller("/api/tasks")
 public class TaskController {
@@ -18,29 +20,28 @@ public class TaskController {
     }
 
     @Get("/")
-    public Iterable<Task> list() {
+    public Flowable<Task> list() {
         return this.repository.findAllByDone(false);
     }
 
     @Get("/done")
-    public Iterable<Task> listDone() {
+    public Flowable<Task> listDone() {
         return this.repository.findAllByDone(true);
     }
 
     @Get("/search")
-    public Iterable<Task> search(String q) {
+    public Flowable<Task> search(String q) {
         return this.repository.searchTasks(q);
     }
 
-
     @Get("/{id}")
-    public Optional<Task> show(@NotNull Long id) {
+    public Maybe<Task> show(@NotNull Long id) {
         return repository.findById(id);
     }
 
     @Post("/")
     @Status(HttpStatus.CREATED)
-    public Task create(@NotEmpty String summary, @Nullable String description) {
+    public Single<Task> create(@NotEmpty String summary, @Nullable String description) {
         Task task = new Task();
         task.setSummary(summary);
         task.setDescription(description);
@@ -49,29 +50,28 @@ public class TaskController {
 
     @Status(HttpStatus.ACCEPTED)
     @Put("/{id}/done")
-    public Optional<Task> finish(@NotNull Long id) {
-        if (!repository.existsById(id)) {
-            return Optional.empty();
-        }
-        repository.updateDone(id, true);
-        return repository.findById(id);
+    public Maybe<Task> finish(@NotNull Long id) {
+        return repository.findById(id).map(task -> {
+            repository.updateDone(id, true);
+            return task;
+        });
     }
 
     @Status(HttpStatus.ACCEPTED)
     @Put("/{id}")
-    public Optional<Task> update(@NotNull Long id, @NotEmpty String summary, @Nullable String description, @Nullable Boolean done) {
-        if (!repository.existsById(id)) {
-            return Optional.empty();
-        }
-        repository.update(id, summary, description, done == null ? false : done);
-        return repository.findById(id);
+    public Maybe<Task> update(@NotNull Long id, @NotEmpty String summary, @Nullable String description, @Nullable Boolean done) {
+        return repository.findById(id).map(task -> {
+            repository.update(id, summary, description, done == null ? false : done);
+            return task;
+        });
     }
 
     @Status(HttpStatus.NO_CONTENT)
     @Delete("/{id}")
-    public Optional<Task> delete(@NotNull Long id) {
-        Optional<Task> task = repository.findById(id);
-        task.ifPresent(repository::delete);
-        return task;
+    public Maybe<Task> delete(@NotNull Long id) {
+        return repository.findById(id).map(task -> {
+            repository.delete(task);
+            return task;
+        });
     }
 }
