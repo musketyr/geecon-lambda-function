@@ -16,7 +16,7 @@ public class Task {
     @GeneratedValue
     private Long id;
 
-    @NotNull @NotEmpty @Max(100)
+    @NotEmpty @Max(100) @Specific
     private String summary;
 
     @Nullable @Max(1000)
