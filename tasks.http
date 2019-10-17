@@ -11,6 +11,19 @@ Accept: application/json
 
 ###
 
+GET {{host}}/api/tasks/done
+Accept: application/json
+
+###
+GET {{host}}/api/tasks/search?q=micronaut
+Accept: application/json
+
+###
+GET {{host}}/api/tasks/search?q=aws
+Accept: application/json
+
+###
+
 POST {{host}}/api/tasks
 Content-Type: application/json
 
@@ -26,12 +39,18 @@ Accept: application/json
 
 ###
 
-PUT {{host}}/api/tasks/1
+PUT {{host}}/api/tasks/1/done
+Content-Type: application/json
+
+###
+
+PUT {{host}}/api/tasks/2
 Content-Type: application/json
 
 {
     "summary" : "learn Spring",
-    "description": "Spring works great with AWS Lambda and GraalVM"
+    "description": "Spring works great with AWS Lambda and GraalVM",
+    "done": false
 }
 
 ###
@@ -41,7 +60,8 @@ Content-Type: application/json
 
 {
   "summary" : "learn Micronaut",
-  "description": "Micronaut works great with AWS Lambda and GraalVM"
+  "description": "Micronaut works great with AWS Lambda and GraalVM",
+  "done": false
 }
 
 ###

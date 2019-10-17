@@ -22,6 +22,8 @@ public class Task {
     @Nullable @Max(1000)
     private String description;
 
+    private boolean done;
+
     public Long getId() {
         return id;
     }
@@ -46,23 +48,27 @@ public class Task {
         this.description = description;
     }
 
+    public boolean isDone() {
+        return done;
+    }
+
+    public void setDone(boolean done) {
+        this.done = done;
+    }
+
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         Task task = (Task) o;
-        return Objects.equals(id, task.id) &&
+        return done == task.done &&
+                Objects.equals(id, task.id) &&
                 Objects.equals(summary, task.summary) &&
                 Objects.equals(description, task.description);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(id, summary, description);
-    }
-
-    @Override
-    public String toString() {
-        return super.toString();
+        return Objects.hash(id, summary, description, done);
     }
 }

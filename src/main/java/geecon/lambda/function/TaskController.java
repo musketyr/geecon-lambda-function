@@ -19,8 +19,19 @@ public class TaskController {
 
     @Get("/")
     public Iterable<Task> list() {
-        return this.repository.findAll();
+        return this.repository.findAllByDone(false);
     }
+
+    @Get("/done")
+    public Iterable<Task> listDone() {
+        return this.repository.findAllByDone(true);
+    }
+
+    @Get("/search")
+    public Iterable<Task> search(String q) {
+        return this.repository.searchTasks(q);
+    }
+
 
     @Get("/{id}")
     public Optional<Task> show(@NotNull Long id) {
@@ -37,12 +48,22 @@ public class TaskController {
     }
 
     @Status(HttpStatus.ACCEPTED)
-    @Put("/{id}")
-    public Optional<Task> update(@NotNull Long id, @NotEmpty String summary, @Nullable String description) {
+    @Put("/{id}/done")
+    public Optional<Task> finish(@NotNull Long id) {
         if (!repository.existsById(id)) {
             return Optional.empty();
         }
-        repository.update(id, summary, description);
+        repository.updateDone(id, true);
+        return repository.findById(id);
+    }
+
+    @Status(HttpStatus.ACCEPTED)
+    @Put("/{id}")
+    public Optional<Task> update(@NotNull Long id, @NotEmpty String summary, @Nullable String description, @Nullable Boolean done) {
+        if (!repository.existsById(id)) {
+            return Optional.empty();
+        }
+        repository.update(id, summary, description, done == null ? false : done);
         return repository.findById(id);
     }
 
