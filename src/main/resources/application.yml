@@ -7,9 +7,12 @@ jackson:
 
 datasources:
   default:
-    url: jdbc:postgresql://localhost:34321/tasks
+    url: jdbc:postgresql://geecon-lambda-function.c49lik5nusqk.eu-central-1.rds.amazonaws.com:5432/tasks
     driverClassName: org.postgresql.Driver
     username: postgres
-    password: micronaut
+    # only accessible within VPC
+    # and will be deleted soon
+    # no need to hide this
+    password: XqNNRIjX1jKtF84V4JCf
     schema-generate: CREATE
     dialect: POSTGRES

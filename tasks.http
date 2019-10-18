@@ -6,6 +6,11 @@
 # * 'ptr' and 'ptrp' create a POST request with a simple or parameter-like body;
 # * 'mptr' and 'fptr' create a POST request to submit a form with a text or file field (multipart/form-data);
 
+###
+GET {{host}}/ping
+Accept: application/json
+
+###
 GET {{host}}/api/tasks
 Accept: application/json
 
@@ -39,12 +44,12 @@ Accept: application/json
 
 ###
 
-PUT {{host}}/api/tasks/1/done
+PUT {{host}}/api/tasks/9/done
 Content-Type: application/json
 
 ###
 
-PUT {{host}}/api/tasks/2
+PUT {{host}}/api/tasks/7
 Content-Type: application/json
 
 {

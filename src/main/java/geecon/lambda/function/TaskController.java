@@ -1,9 +1,13 @@
 package geecon.lambda.function;
 
 import io.micronaut.http.HttpStatus;
-import io.micronaut.http.annotation.*;
+import io.micronaut.http.annotation.Controller;
+import io.micronaut.http.annotation.Delete;
+import io.micronaut.http.annotation.Get;
+import io.micronaut.http.annotation.Post;
+import io.micronaut.http.annotation.Put;
+import io.micronaut.http.annotation.Status;
 
-import javax.annotation.Nullable;
 import javax.validation.constraints.NotEmpty;
 import javax.validation.constraints.NotNull;
 import java.util.Optional;
@@ -40,7 +44,7 @@ public class TaskController {
 
     @Post("/")
     @Status(HttpStatus.CREATED)
-    public Task create(@NotEmpty String summary, @Nullable String description) {
+    public Task create(@NotEmpty @Specific String summary, String description) {
         Task task = new Task();
         task.setSummary(summary);
         task.setDescription(description);
@@ -59,7 +63,7 @@ public class TaskController {
 
     @Status(HttpStatus.ACCEPTED)
     @Put("/{id}")
-    public Optional<Task> update(@NotNull Long id, @NotEmpty String summary, @Nullable String description, @Nullable Boolean done) {
+    public Optional<Task> update(@NotNull Long id, @NotEmpty @Specific String summary, String description, Boolean done) {
         if (!repository.existsById(id)) {
             return Optional.empty();
         }

@@ -1,7 +1,7 @@
 FROM gradle:5.1.1-jdk-alpine as builder
 COPY --chown=gradle:gradle . /home/application
 WORKDIR /home/application
-RUN gradle build --no-daemon
+RUN gradle build -x test --no-daemon
 
 FROM amazonlinux:2017.03.1.20170812 as graalvm
 # install graal to amazon linux.
