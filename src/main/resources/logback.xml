@@ -9,6 +9,8 @@
         </encoder>
     </appender>
 
+    <logger name="io.netty.channel" level="warn" />
+
     <root level="trace">
         <appender-ref ref="STDOUT" />
     </root>

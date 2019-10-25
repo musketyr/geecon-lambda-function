@@ -7,12 +7,9 @@ jackson:
 
 datasources:
   default:
-    url: jdbc:postgresql://geecon-lambda-function.c49lik5nusqk.eu-central-1.rds.amazonaws.com:5432/tasks
-    driverClassName: org.postgresql.Driver
-    username: postgres
-    # only accessible within VPC
-    # and will be deleted soon
-    # no need to hide this
-    password: XqNNRIjX1jKtF84V4JCf
-    schema-generate: CREATE
-    dialect: POSTGRES
+    url: jdbc:h2:mem:devDb;MVCC=TRUE;LOCK_TIMEOUT=10000;DB_CLOSE_ON_EXIT=FALSE
+    driverClassName: org.h2.Driver
+    username: sa
+    password: ''
+    schema-generate: CREATE_DROP
+    dialect: H2

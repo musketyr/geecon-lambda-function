@@ -8,7 +8,7 @@ import io.micronaut.data.repository.CrudRepository;
 
 import java.util.List;
 
-@JdbcRepository(dialect = Dialect.POSTGRES)
+@JdbcRepository(dialect = Dialect.H2)
 public interface TaskRepository extends CrudRepository<Task, Long> {
 
     void update(@Id Long id, String summary, String description, boolean done);

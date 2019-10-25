@@ -34,7 +34,8 @@ Content-Type: application/json
 
 {
     "summary" : "learn Micronaut",
-    "description": "Micronaut works great with AWS Lambda and GraalVM"
+    "description": "Micronaut works great with AWS Lambda and GraalVM",
+    "done": true
 }
 
 ###
