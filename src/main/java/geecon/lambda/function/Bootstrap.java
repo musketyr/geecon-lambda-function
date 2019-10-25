@@ -19,6 +19,7 @@ public class Bootstrap implements ApplicationEventListener<StartupEvent> {
         if (repository.count() == 0) {
             Task task = new Task();
             task.setSummary("Learn Micronaut with GraalVM");
+            task.setDescription("Required");
             repository.save(task);
         }
     }
